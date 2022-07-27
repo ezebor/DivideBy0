@@ -1,12 +1,11 @@
 object OneDividedByZero extends App {
 
-  case class Number(dividend: Double) {
+  case class Operand(number: Double) {
 
-    def dividedBy(divisor: Double): Double = {
-
+    def /~(divisor: Operand): Double = {
       def infiniteList(auxDivisor: Double): LazyList[Double] = {
-        val average = (auxDivisor + divisor) / 2
-        val newResult = Math.min(Math.max(dividend / average, Double.MinValue), Double.MaxValue)
+        val average = (auxDivisor + divisor.number) / 2
+        val newResult = Math.min(Math.max(number / average, Double.MinValue), Double.MaxValue)
         newResult #:: infiniteList(average)
       }
 
@@ -16,9 +15,10 @@ object OneDividedByZero extends App {
           else converge(result2 #:: othersResults)
       }
 
-      converge(infiniteList(dividend))
+      converge(infiniteList(number))
     }
   }
-  implicit def toNumber(n: Double) = Number(n)
-  println(3.0 dividedBy 0)
+
+  implicit def toNumber(n: Double): Operand = Operand(n)
+  println(1.0 /~ 2.0)
 }
