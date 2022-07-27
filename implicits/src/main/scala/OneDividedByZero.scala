@@ -3,19 +3,25 @@ object OneDividedByZero extends App {
   case class Operand(number: Double) {
 
     def /~(divisor: Operand): Double = {
-      def betweenLimits(number: Double): Double = Math.min(Math.max(number, Double.MinValue), Double.MaxValue)
+      def limit(number: Double): Double = Math.min(Math.max(number, Double.MinValue), Double.MaxValue)
 
-      def infiniteList(auxDivisor: Double): LazyList[(Double, Double)] = {
-        val average = (auxDivisor + divisor.number) / 2
-        (betweenLimits(number / auxDivisor), betweenLimits(number / average)) #:: infiniteList(average)
+      def infiniteDivisors(previousDivisor: Double): LazyList[(Double, Double)] = {
+        val newDivisor = (previousDivisor + divisor.number) / 2
+        (previousDivisor, newDivisor) #:: infiniteDivisors(newDivisor)
       }
 
-      def converge(results: LazyList[(Double, Double)]): Double = results
-        .filter { case (result1, result2) => Math.abs(result2 - result1) <= 1E-10}
+      def converge(): Double =
+        infiniteDivisors(divisor.number)
+        .map {
+          case (previousDivisor, nextDivisor) => (limit(number / previousDivisor), limit(number / nextDivisor))
+        }
+        .filter {
+          case (previousResult, nextResult) => Math.abs(nextResult - previousResult) <= 1E-10
+        }
         .head
         ._2
 
-      converge(infiniteList(number))
+      converge()
     }
   }
 
