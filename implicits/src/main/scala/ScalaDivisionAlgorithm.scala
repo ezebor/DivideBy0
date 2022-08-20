@@ -1,6 +1,6 @@
 import scala.math.BigDecimal.RoundingMode
 
-object OneDividedByZero extends App {
+object ScalaDivisionAlgorithm extends App {
   case class Division(dividend: Double, divisor: Double) {
     implicit class CustomDivision(number1: Double) {
       def /~(number2: Double): Double = Math.min(Math.max(number1 / number2, Double.MinValue), Double.MaxValue)
