@@ -1,9 +1,6 @@
 import scala.math.BigDecimal.RoundingMode
 
 object ScalaDivisionAlgorithm extends App {
-  implicit class CustomDivision(number1: Double) {
-    def /~(number2: Double): Double = Math.min(Math.max(number1 / number2, Double.MinValue), Double.MaxValue)
-  }
 
   def divide(number1: Double, number2: Double) = Math.min(Math.max(number1 / number2, Double.MinValue), Double.MaxValue)
 
