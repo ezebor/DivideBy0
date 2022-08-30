@@ -2,8 +2,6 @@ import scala.math.BigDecimal.RoundingMode
 
 object ScalaDivisionAlgorithm extends App {
 
-  def divide(number1: Double, number2: Double) = Math.min(Math.max(number1 / number2, Double.MinValue), Double.MaxValue)
-
   def quotient(dividend: Double, originalDivisor: Double): Double = {
     // step 1: create succession of infinite divisors
     val divisors = LazyList.iterate(dividend)(aDivisor => divide(aDivisor + originalDivisor, 2))
@@ -18,6 +16,8 @@ object ScalaDivisionAlgorithm extends App {
       .head
       ._1
   }
+
+  def divide(number1: Double, number2: Double) = Math.min(Math.max(number1 / number2, Double.MinValue), Double.MaxValue)
 
   val tenDividedByTwo = quotient(10.0, 2.0)
   println(tenDividedByTwo)
