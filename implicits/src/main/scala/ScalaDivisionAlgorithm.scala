@@ -9,13 +9,15 @@ object ScalaDivisionAlgorithm extends App {
 
   def quotient(dividend: Double, originalDivisor: Double): Double = {
     // step 1: create succession of infinite divisors
-    lazy val divisorsCandidates = LazyList.iterate(dividend)(divisorCandidate => divide((divisorCandidate + originalDivisor), 2))
+    val divisors = LazyList.iterate(dividend)(aDivisor => divide(aDivisor + originalDivisor, 2))
+
     // step 2: calculate infinite quotients
-    lazy val quotientsCandidates = divisorsCandidates.map(divisorCandidate => divide(dividend, divisorCandidate)).zipWithIndex
+    val quotients = divisors.map(aCandidate => divide(dividend, aCandidate)).zipWithIndex
+
     // step 3: return the quotient to which the succession converges
-    quotientsCandidates
+    quotients
       .tail
-      .dropWhile{case (quotient, index) => Math.abs(quotient - quotientsCandidates(index - 1)._1) >= 1E-10}
+      .dropWhile{case (quotient, index) => Math.abs(quotient - quotients(index - 1)._1) >= 1E-10}
       .head
       ._1
   }
